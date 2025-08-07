@@ -3,6 +3,7 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher
 from handlers import questions
+from aiogram.fsm.storage.memory import MemoryStorage
 
 from dotenv import load_dotenv
 
@@ -16,7 +17,8 @@ token = os.getenv("BOT_TOKEN")
 
 async def main():
     bot = Bot(token=token)
-    dp = Dispatcher()
+    dp = Dispatcher(storage=MemoryStorage())
+
 
     dp.include_routers(questions.router)
 

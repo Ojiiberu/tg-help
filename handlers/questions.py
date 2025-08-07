@@ -1,6 +1,9 @@
 from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.fsm.context import FSMContext
+from aiogram.fsm.state import State, StatesGroup
+from utils.data_loader import get_command_info
 
 from keyboards.button import main_buttons_kb, categories
 
@@ -20,30 +23,27 @@ async def answer_yes(message: Message):
         reply_markup=categories()
     )
 
-@router.message(F.text.lower() == "Поиск по имени")
-async def answer_no(message: Message):
-    await message.answer(
-        "Введите команду.",
-        reply_markup=ReplyKeyboardRemove()
-    )
+class CommandSearch(StatesGroup):
+    waiting_for_name = State()
 
-@router.message(F.text.lower() == "Поиск по описанию")
-async def answer_no(message: Message):
-    await message.answer(
-        "Введите ключевое слово",
-        reply_markup=ReplyKeyboardRemove()
-    )
+@router.message(F.text == "Поиск по имени")
+async def ask_command_name(message: Message, state: FSMContext):
+    await message.answer("Введите название команды")
+    await state.set_state(CommandSearch.waiting_for_name)
 
-@router.message(F.text.lower() == "Случайная команда")
-async def answer_no(message: Message):
-    await message.answer(
-        "Вывод случайной комады",
-        reply_markup=ReplyKeyboardRemove()
-    )
 
-@router.message(F.text.lower() == "help")
-async def answer_no(message: Message):
-    await message.answer(
-        "Вывод полезной информации",
-        reply_markup=ReplyKeyboardRemove()
-    )
+@router.message(CommandSearch.waiting_for_name)
+async def show_command_info(message: Message, state: FSMContext):
+    cmd = message.text.strip().lower()
+    info = get_command_info(cmd)
+
+    if info:
+        await message.answer(
+             f"🔹 Команда: {cmd}\n"
+            f"📄 Описание: {info['description']}\n"
+            f"🧪 Пример: {info['example']}\n"
+            f"📚 Подробнее: {info['link']}"
+        )
+    else:
+        await message.answer("Команда не найдена, попробуйте ещё раз")
+    await state.clear()
