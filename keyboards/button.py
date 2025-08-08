@@ -7,7 +7,6 @@ def main_buttons_kb() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
     kb.button(text="Категории")
     kb.button(text="Поиск по имени")
-    kb.button(text="Поиск по описанию")
     kb.button(text="Случайная команда")
     kb.button(text="help")
     kb.adjust(2)

@@ -4,7 +4,7 @@ from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
-from utils.data_loader import get_command_info, get_category,  get_all_categories, load_commands
+from utils.data_loader import get_command_info, get_category,  get_all_categories, load_commands, random_command
 from keyboards.button import main_buttons_kb, category_name
 
 router = Router()  
@@ -99,3 +99,18 @@ async def show_command_info(message: Message, state: FSMContext):
     else:
         await message.answer("Команда не найдена, попробуйте ещё раз")
     await state.clear()
+
+@router.message(F.text == "Случайная команда")
+async def random_command_show(message: Message):
+    rand = random_command()
+    if rand:
+        await message.answer(
+            f"Команда: {rand['name']}\n"
+            f"Описание: {rand['description']}\n"
+            f"Пример: {rand['example']}\n"
+            f"Подробнее: {rand['link']}"
+        )
+    else:
+        await message.answer("нет доступных команд")
+
+# хелп
