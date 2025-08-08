@@ -1,5 +1,6 @@
-from aiogram.types import ReplyKeyboardMarkup
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from typing import Iterable
 
 
 def main_buttons_kb() -> ReplyKeyboardMarkup:
@@ -12,13 +13,9 @@ def main_buttons_kb() -> ReplyKeyboardMarkup:
     kb.adjust(2)
     return kb.as_markup(resize_keyboard=True)
 
-def categories() -> ReplyKeyboardMarkup:
+def category_name(categories: Iterable[str]) -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
-    kb.button(text="Файлы и каталоги")
-    kb.button(text="Сеть")
-    kb.button(text="Процессы")
-    kb.button(text="Доступы и права")
-    kb.button(text="пакеты")
-    kb.button(text="Система и отчистка")
+    buttons = [KeyboardButton(text=c) for c in categories]
+    kb.add(*buttons)
+    kb.adjust(2)
     return kb.as_markup(resize_keyboard=True)
-    
