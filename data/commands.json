@@ -5,16 +5,184 @@
     "category": "Файлы и каталоги",
     "link": "https://man7.org/linux/man-pages/man1/ls.1.html"
   },
+  "cd": {
+    "description": "Изменяет текущий каталог",
+    "example": "cd /home/user",
+    "category": "Файлы и каталоги",
+    "link": "https://man7.org/linux/man-pages/man1/cd.1p.html"
+  },
+  "pwd": {
+    "description": "Показывает полный путь к текущему каталогу",
+    "example": "pwd",
+    "category": "Файлы и каталоги",
+    "link": "https://man7.org/linux/man-pages/man1/pwd.1.html"
+  },
+  "mkdir": {
+    "description": "Создаёт новый каталог",
+    "example": "mkdir new_folder",
+    "category": "Файлы и каталоги",
+    "link": "https://man7.org/linux/man-pages/man1/mkdir.1.html"
+  },
+  "rm": {
+    "description": "Удаляет файлы или каталоги",
+    "example": "rm -rf folder",
+    "category": "Файлы и каталоги",
+    "link": "https://man7.org/linux/man-pages/man1/rm.1.html"
+  },
+  "cp": {
+    "description": "Копирует файлы и каталоги",
+    "example": "cp file.txt /backup/",
+    "category": "Файлы и каталоги",
+    "link": "https://man7.org/linux/man-pages/man1/cp.1.html"
+  },
+  "mv": {
+    "description": "Перемещает или переименовывает файлы и каталоги",
+    "example": "mv oldname.txt newname.txt",
+    "category": "Файлы и каталоги",
+    "link": "https://man7.org/linux/man-pages/man1/mv.1.html"
+  },
+  "find": {
+    "description": "Ищет файлы и каталоги по заданным критериям",
+    "example": "find /home -name '*.txt'",
+    "category": "Файлы и каталоги",
+    "link": "https://man7.org/linux/man-pages/man1/find.1.html"
+  },
   "ping": {
     "description": "Проверяет доступность узла в сети",
     "example": "ping google.com",
     "category": "Сеть",
     "link": "https://man7.org/linux/man-pages/man8/ping.8.html"
   },
+  "ifconfig": {
+    "description": "Показывает и настраивает сетевые интерфейсы",
+    "example": "ifconfig eth0",
+    "category": "Сеть",
+    "link": "https://man7.org/linux/man-pages/man8/ifconfig.8.html"
+  },
+  "netstat": {
+    "description": "Отображает сетевые подключения, таблицы маршрутизации и статистику интерфейсов",
+    "example": "netstat -tuln",
+    "category": "Сеть",
+    "link": "https://man7.org/linux/man-pages/man8/netstat.8.html"
+  },
+  "curl": {
+    "description": "Передаёт данные по URL (HTTP, FTP и др.)",
+    "example": "curl https://example.com",
+    "category": "Сеть",
+    "link": "https://curl.se/docs/manpage.html"
+  },
+  "wget": {
+    "description": "Скачивает файлы из интернета",
+    "example": "wget https://example.com/file.zip",
+    "category": "Сеть",
+    "link": "https://www.gnu.org/software/wget/manual/wget.html"
+  },
+  "scp": {
+    "description": "Копирует файлы по SSH",
+    "example": "scp file.txt user@host:/path",
+    "category": "Сеть",
+    "link": "https://man7.org/linux/man-pages/man1/scp.1.html"
+  },
+  "ssh": {
+    "description": "Подключается к удалённому серверу по SSH",
+    "example": "ssh user@host",
+    "category": "Сеть",
+    "link": "https://man7.org/linux/man-pages/man1/ssh.1.html"
+  },
   "chmod": {
-        "description": "Изменить права доступа",
-        "example": "chmod 755 file.txt",
-        "link": "https://linux.die.net/man/1/chmod",
-        "category": "Доступы и права"
-    }
+    "description": "Изменяет права доступа",
+    "example": "chmod 755 file.txt",
+    "category": "Доступы и права",
+    "link": "https://linux.die.net/man/1/chmod"
+  },
+  "chown": {
+    "description": "Меняет владельца файла или каталога",
+    "example": "chown user:group file.txt",
+    "category": "Доступы и права",
+    "link": "https://man7.org/linux/man-pages/man1/chown.1.html"
+  },
+  "umask": {
+    "description": "Устанавливает маску прав по умолчанию",
+    "example": "umask 022",
+    "category": "Доступы и права",
+    "link": "https://man7.org/linux/man-pages/man2/umask.2.html"
+  },
+  "id": {
+    "description": "Показывает идентификаторы пользователя и группы",
+    "example": "id",
+    "category": "Доступы и права",
+    "link": "https://man7.org/linux/man-pages/man1/id.1.html"
+  },
+  "passwd": {
+    "description": "Изменяет пароль пользователя",
+    "example": "passwd",
+    "category": "Доступы и права",
+    "link": "https://man7.org/linux/man-pages/man1/passwd.1.html"
+  },
+  "top": {
+    "description": "Отображает список процессов в реальном времени",
+    "example": "top",
+    "category": "Процессы",
+    "link": "https://man7.org/linux/man-pages/man1/top.1.html"
+  },
+  "ps": {
+    "description": "Показывает список запущенных процессов",
+    "example": "ps aux",
+    "category": "Процессы",
+    "link": "https://man7.org/linux/man-pages/man1/ps.1.html"
+  },
+  "kill": {
+    "description": "Отправляет сигнал завершения процессу",
+    "example": "kill 1234",
+    "category": "Процессы",
+    "link": "https://man7.org/linux/man-pages/man1/kill.1.html"
+  },
+  "killall": {
+    "description": "Завершает процессы по имени",
+    "example": "killall firefox",
+    "category": "Процессы",
+    "link": "https://man7.org/linux/man-pages/man1/killall.1.html"
+  },
+  "htop": {
+    "description": "Интерактивный монитор процессов",
+    "example": "htop",
+    "category": "Процессы",
+    "link": "https://man7.org/linux/man-pages/man1/htop.1.html"
+  },
+  "df": {
+    "description": "Показывает использование дискового пространства",
+    "example": "df -h",
+    "category": "Система и очистка",
+    "link": "https://man7.org/linux/man-pages/man1/df.1.html"
+  },
+  "du": {
+    "description": "Показывает размер файлов и каталогов",
+    "example": "du -sh /var/log",
+    "category": "Система и очистка",
+    "link": "https://man7.org/linux/man-pages/man1/du.1.html"
+  },
+  "free": {
+    "description": "Отображает информацию об использовании оперативной памяти",
+    "example": "free -m",
+    "category": "Система и очистка",
+    "link": "https://man7.org/linux/man-pages/man1/free.1.html"
+  },
+  "uptime": {
+    "description": "Показывает время работы системы и нагрузку",
+    "example": "uptime",
+    "category": "Система и очистка",
+    "link": "https://man7.org/linux/man-pages/man1/uptime.1.html"
+  },
+  "reboot": {
+    "description": "Перезагружает систему",
+    "example": "reboot",
+    "category": "Система и очистка",
+    "link": "https://man7.org/linux/man-pages/man8/reboot.8.html"
+  },
+  "shutdown": {
+    "description": "Выключает или перезагружает систему",
+    "example": "shutdown -h now",
+    "category": "Система и очистка",
+    "link": "https://man7.org/linux/man-pages/man8/shutdown.8.html"
+  }
 }

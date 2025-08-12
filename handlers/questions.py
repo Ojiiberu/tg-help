@@ -1,11 +1,11 @@
 from aiogram import Router, F
 from aiogram.filters import Command
-from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 from utils.data_loader import get_command_info, get_category,  get_all_categories, load_commands, random_command
-from keyboards.button import main_buttons_kb, category_name
+from keyboards.button import main_buttons_kb, category_name, back_button
 
 router = Router()  
 
@@ -16,12 +16,15 @@ async def cmd_start(message: Message):
         reply_markup=main_buttons_kb()
     )
 
+
+
 class CommandSearch(StatesGroup):
     waiting_for_name = State()
     
 
 class CategorySearch(StatesGroup):
     waiting_for_category = State()
+
 
 @router.message(F.text == "Категории")
 async def ask_catigory_name(message: Message, state: FSMContext):
@@ -31,30 +34,36 @@ async def ask_catigory_name(message: Message, state: FSMContext):
         return
     await message.answer(
         text="Выберете интересующую категорию",
-        reply_markup = category_name(cats)
+        reply_markup = category_name(cats, include_back=True)
         )
     await state.set_state(CategorySearch.waiting_for_category)
 
 
+@router.message(CategorySearch.waiting_for_category, F.text.in_("назад"))
+async def back_from_category(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer("Вы вернулись в главное меню", reply_markup=main_buttons_kb())
+    
+    
+    
 @router.message(CategorySearch.waiting_for_category)
-async def show_category(message: Message, state: FSMContext):
-    category = message.text.strip()
+async def show_category(message: Message, state: FSMContext):   
+    text = message.text.strip()
+    if text.lower() in ("назад"):
+        await state.clear()
+        await message.answer("Вы вернулись в главное меню", reply_markup=main_buttons_kb())
+        return
+    category = text
     commands = get_category(category)
     if not commands:
-        try:
-            all_cmds = load_commands()
-            cats = sorted({(d.get("category") or "<нет категории>"). strip() for d in all_cmds.values()})
-            await message.answer(
-                f"DEBUG: Вы выбрали:'{category}'\n"
-                f"Категории в базе: {cats}\n"
-                f"Всего команд в базе: {len(all_cmds)}"
-            )
-        except Exception as e:
-            await message.answer(f"DEBUG: Ошибка чтения базы: {e}")
-        await message.answer("В этой категории пока нет команд")
-        await state.clear()
+        cats = get_all_categories()
+        await message.answer(
+            "Категория не найдена или в ней нет команд.\n"
+            "Выберите другую категорию или нажмите 'Назад' ",
+            reply_markup=category_name(cats, include_back=True)
+        )
         return
-    
+
     lines = []
     for name, info in commands.items():
         desc = info.get("description", "-")
@@ -75,17 +84,32 @@ async def show_category(message: Message, state: FSMContext):
         
     for chunk in chunk_lines(lines):
         await message.answer(chunk, parse_mode="Markdown")
-    await state.clear()
+
+    cats = get_all_categories()
+    await message.answer(
+        "Можете выбрать другую категорию или нажать 'Назад', чтобы вернуться в меню",
+        reply_markup=category_name(cats, include_back=True)
+    )
         
 
 @router.message(F.text == "Поиск по имени")
 async def ask_command_name(message: Message, state: FSMContext):
-    await message.answer("Введите название команды")
+    await message.answer("Введите название команды или нажмите 'Назад' для выхода", reply_markup=back_button() )
     await state.set_state(CommandSearch.waiting_for_name)
 
+@router.message(CommandSearch.waiting_for_name, F.text.in_("назад"))
+async def back_from_name(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer("Вы вернулись в главное меню", reply_markup=main_buttons_kb())
 
 @router.message(CommandSearch.waiting_for_name)
 async def show_command_info(message: Message, state: FSMContext):
+    text = message.text.strip()
+    if text.lower() in ("назад"):
+        await state.clear()
+        await message.answer("Вы вернулись в главное меню", reply_markup=main_buttons_kb())
+        return
+
     cmd = message.text.strip().lower()
     info = get_command_info(cmd)
 
@@ -98,7 +122,25 @@ async def show_command_info(message: Message, state: FSMContext):
         )
     else:
         await message.answer("Команда не найдена, попробуйте ещё раз")
-    await state.clear()
+    await message.answer(
+        "Введите новую команду или нажмите 'Назад'",
+        reply_markup=back_button()
+    )
+
+# @router.message(CategorySearch.waiting_for_category, F.text == "Назад")
+# async def back_from_category(message: Message, state: FSMContext):
+#     await state.clear()
+#     await message.answer(
+#         "Вы вернулись в главное меню",
+#         reply_markup=main_buttons_kb()
+#     )
+# @router.message(CommandSearch.waiting_for_name, F.text == "назад")
+# async def back_from_name(message: Message, state: FSMContext):
+#     await state.clear()
+#     await message.answer(
+#         "Вы вернулись в главное меню",
+#         reply_markup=main_buttons_kb()
+#     )
 
 @router.message(F.text == "Случайная команда")
 async def random_command_show(message: Message):
@@ -112,5 +154,7 @@ async def random_command_show(message: Message):
         )
     else:
         await message.answer("нет доступных команд")
+
+
 
 # хелп

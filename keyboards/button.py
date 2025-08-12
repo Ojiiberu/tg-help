@@ -12,9 +12,17 @@ def main_buttons_kb() -> ReplyKeyboardMarkup:
     kb.adjust(2)
     return kb.as_markup(resize_keyboard=True)
 
-def category_name(categories: Iterable[str]) -> ReplyKeyboardMarkup:
+def category_name(categories: Iterable[str], include_back: bool = True) -> ReplyKeyboardMarkup:
+
     kb = ReplyKeyboardBuilder()
     buttons = [KeyboardButton(text=c) for c in categories]
     kb.add(*buttons)
+    if include_back:
+        kb.button(text="Назад")
     kb.adjust(2)
+    return kb.as_markup(resize_keyboard=True)
+
+def back_button() -> ReplyKeyboardMarkup:
+    kb = ReplyKeyboardBuilder()
+    kb.button(text="Назад")
     return kb.as_markup(resize_keyboard=True)
